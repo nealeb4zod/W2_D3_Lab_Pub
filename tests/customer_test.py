@@ -2,6 +2,7 @@ import unittest
 from src.customer import Customer
 from src.drink import Drink
 from src.pub import Pub
+from src.food import Food
 
 class TestCustomer(unittest.TestCase):
     
@@ -27,14 +28,30 @@ class TestCustomer(unittest.TestCase):
         self.customer_1.make_drunk(drink_1)
         self.assertEqual(2, self.customer_1.drunkenness)
 
+    def test_make_sober(self):
+        drink_1 = Drink("bottle of vodka", 30.00, 10)
+        food_1 = Food("Steak", 11.99, 8)
+        self.customer_1.make_drunk(drink_1)
+        self.customer_1.make_sober(food_1)
+        self.assertEqual(2, self.customer_1.drunkenness)
+
+        
+
     def test_customer_can_afford_drink(self):
         drink_1 = Drink("Beer", 5.00, 2)
-        
-        self.assertEqual(True, self.customer_1.customer_can_afford_drink(self.customer_1, drink_1))
+        self.assertEqual(True, self.customer_1.customer_can_afford_item(self.customer_1, drink_1))
+    
+    def test_customer_can_afford_food(self):
+        food_1 = Food("Chips", 1.50, 2)
+        self.assertEqual(True, self.customer_1.customer_can_afford_item(self.customer_1, food_1))
+
+    def test_customer_cannot_afford_food(self):
+        food_1 = Food("Chips", 6.50, 2)
+        self.assertEqual(False, self.customer_2.customer_can_afford_item(self.customer_2, food_1))
 
     def test_customer_cannot_afford_drink(self):
         drink_1 = Drink("cocktail", 7.00, 3)
-        self.assertEqual(False, self.customer_2.customer_can_afford_drink(self.customer_2, drink_1))
+        self.assertEqual(False, self.customer_2.customer_can_afford_item(self.customer_2, drink_1))
 
     def test_remove_money_from_wallet(self):
         drink_1 = Drink("Beer", 5.00, 2)
