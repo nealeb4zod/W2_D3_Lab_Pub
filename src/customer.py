@@ -11,22 +11,25 @@ class Customer:
     def make_sober(self, food):
         self.drunkenness -= food.rejuvenation_level
 
-    def customer_can_afford_item(self, customer, item):
-        if customer.wallet >= item.price:
+    def customer_can_afford_item(self, item):
+        if self.wallet >= item.price:
             return True
         else:
             return False
 
+    def age_challenge(self):
+        if self.age >= 18:
+            return True
+        else:
+            return False
 
-    def remove_money_from_wallet(self, customer, item):
-        customer.wallet -= item.price
+    def remove_money_from_wallet(self, item):
+        self.wallet -= item.price
 
-
-
-    def customer_can_buy_drink(self, customer, drink, pub):
-        if pub.age_challange(customer) == True:
+    def customer_can_buy_drink(self, drink, pub):
+        if self.age_challenge() == True:
             if pub.drink_available(drink) == True:
-                if self.customer_can_afford_item(customer, drink) == True:
-                    self.remove_money_from_wallet(customer, drink)
-                    pub.add_money_to_till(pub, drink)
+                if self.customer_can_afford_item(drink) == True:
+                    self.remove_money_from_wallet(drink)
+                    pub.add_money_to_till(drink)
                     pub.remove_item_from_stock(drink)
